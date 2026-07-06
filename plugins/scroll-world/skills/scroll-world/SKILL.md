@@ -131,10 +131,34 @@ These stills double as **video posters and lazy-load fallbacks**, so keep them.
 
 ---
 
-## Step 4 — Generate the dive-in clips
+## Step 4 — Camera architecture (pick one — this makes or breaks the feel)
 
-One camera flight per scene: starts high/outside, descends into the interior, structure
-opens. Model **`seedance_2_0`** (image-to-video), `--start-image = the scene still`.
+How the camera moves *between* scenes is the single biggest quality lever. Two shapes;
+pick by aesthetic.
+
+### A) Continuous forward take — RECOMMENDED for grounded / realistic / walkthrough
+One camera that only ever glides **forward**, first scene through last, as a single take.
+Generate the legs **sequentially**: leg 0 from scene-0's still (glide forward into it);
+then each leg's `--start-image` = the **previous leg's ACTUAL last frame** (extract with
+ffmpeg), prompt *"continue gliding smoothly FORWARD into [scene i], never pulling back"*,
+and **no `--end-image`** — an end-image of a wide establishing shot forces the camera to
+pull back, which is the #1 cause of stutter. Extract each leg's last frame to feed the
+next. Result: every seam is frame-identical **and** the camera never reverses. There are
+**no connectors** (skip Step 5) — the legs ARE the journey. Wire each leg as a section
+clip with `connectors: []` and a small `crossfade` (~0.08). Even without an `--end-image`
+the legs still arrive at distinct rooms (the prompt steers the content). Cost: strictly
+**sequential** (can't parallelize) and slower; interiors trip the NSFW filter, so build in
+re-rolls (3 attempts/leg).
+
+### B) Dive-in + aerial connector — only for diorama / miniature / god's-eye worlds
+A "dive into each scene" clip + a connector that pulls **up and out** and flies over to the
+next scene (Step 5). The pull-out **reverses camera direction at every seam** (forward dive
+→ backward pull-out). In a miniature/diorama world that reads as an intentional "zoom out
+to the map, fly to the next island"; in a grounded first-person walkthrough it reads as a
+jarring **rewind/stutter**. Use B only for the map-like aesthetic. When in doubt, use A.
+
+**For B**, one camera flight per scene: starts high/outside, descends into the interior,
+structure opens. Model **`seedance_2_0`** (image-to-video), `--start-image = the scene still`.
 
 - Use the **solid-background still** (not the knocked-out transparent one) as the
   start image, so the video has a full frame.
@@ -149,7 +173,11 @@ opens. Model **`seedance_2_0`** (image-to-video), `--start-image = the scene sti
 
 ---
 
-## Step 5 — The seamless chain (THE CRITICAL PART)
+## Step 5 — Connectors (architecture B only)
+
+Skip this whole step for architecture **A** — the forward take has no connectors; its legs
+already chain seamlessly. This step applies to **B** (diorama/miniature), and note the
+reversal caveat from Step 4.
 
 The connector clips are what make the world feel *connected* instead of cut. A connector
 flies from the end of scene i out and into the start of scene i+1. **Both of its
@@ -276,6 +304,11 @@ is the thing most likely to be wrong:
 
 - **Seam pop** → connector endpoints were the diorama stills, not the neighbouring
   clips' actual frames. Always extract real frames (Step 5).
+- **Seam stutter / camera "jumps backward"** → even with frame-matched seams, if the
+  camera *velocity reverses* (forward dive, then a connector that pulls back out) it
+  reads as a rewind. This is inherent to architecture B. For any grounded walkthrough use
+  architecture A (one continuous forward take — legs chained from actual last frames, no
+  pull-back, no `--end-image`); see Step 4.
 - **Frozen video / stuck at frame 0** → `seekable=[0,0]`; the host isn't serving byte
   ranges. Use blob URLs (engine does).
 - **Huge files** → you used all-intra. Use `-g 8` + blob instead.

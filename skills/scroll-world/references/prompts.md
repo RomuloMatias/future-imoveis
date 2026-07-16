@@ -14,7 +14,12 @@ Collect and write down:
 - `STYLE` — the art direction (default below).
 - `SECTIONS[]` — ordered list; for each: `id`, `label`, `subject` (what's in the diorama), `eyebrow`, `title`, `body` (≤ 1 sentence), `tags[]` (0–3). Last section = hero product + CTA.
 - `MOBILE` — yes/no. **Always asked** (SKILL Step 1.5), presented to the user
-  with the ~2× credit cost stated. Yes = the **native 9:16 portrait chain** (pipeline §6b):
+  with the ~2× credit cost stated.
+- `VIDEO_TIER` — draft (`seedance_2_0_mini`) | standard (`seedance_2_0`, default) |
+  alternate (`kling3_0`). Chosen by cost at SKILL Step 1.6, with the calibrated
+  total estimate stated before anything renders.
+- `STILLS_SOURCE` — higgsfield (`gpt_image_2`, spends credits) | codex
+  (`image_gen`, subscription-billed; only offer when the Codex CLI is present). Yes = the **native 9:16 portrait chain** (pipeline §6b):
   portrait renders of every dive/connector + `clipMobile`/`connectorsMobile`/`stillMobile`
   wiring + the full mobile QA. The §6 crop encodes are a no-credits stopgap only.
 

@@ -50,7 +50,7 @@ export function ThemeToggle() {
       whileTap={shouldReduceMotion ? undefined : { scale: 0.96 }}
       aria-label={actionLabel}
       title={actionLabel}
-      className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/15 bg-white/10 text-[#f2f0ea]"
+      className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border-[var(--header-glass-border)] bg-[var(--header-glass-toggle-bg)] text-[var(--header-glass-text)] transition-colors hover:bg-[var(--header-glass-toggle-hover)]"
     >
       <motion.span
         key={isDark ? "moon" : "sun"}

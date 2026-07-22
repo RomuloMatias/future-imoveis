@@ -7,7 +7,7 @@ export function BrandMark({ className }: { className?: string }) {
       aria-label="Future Imóveis"
       className={cn("block h-9 w-auto", className)}
     >
-      <img src="/brand/future-logo.svg" alt="" className="h-full w-auto" />
+      <img src="/brand/future-logo.svg" alt="" className="brand-mark-image h-full w-auto" />
     </span>
   );
 }

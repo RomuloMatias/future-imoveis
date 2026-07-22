@@ -26,15 +26,15 @@ export function SiteHeader() {
     >
       <nav
         aria-label="Navegação principal"
-        className="mx-auto flex h-16 max-w-site items-center justify-between rounded-2xl border border-white/15 bg-[#191a1c]/90 px-4 text-[#f2f0ea] shadow-2xl shadow-black/10 backdrop-blur-xl tablet:px-6"
+        className="mx-auto flex h-16 max-w-site items-center justify-between rounded-2xl border-[var(--header-glass-border)] bg-[var(--header-glass-bg)] px-4 text-[var(--header-glass-text)] shadow-[0_16px_45px_rgba(5,10,18,0.24)] backdrop-blur-2xl backdrop-saturate-150 tablet:px-6"
       >
         <a href="#inicio" className="flex min-h-11 items-center gap-2.5" aria-label="Future Imóveis — início">
           <BrandMark />
           <span className="hidden leading-none mobile:block">
-            <strong className="block font-display text-sm font-extrabold uppercase tracking-[0.12em] text-[#f2f0ea]">
-              <span className="text-[#e8484d]">Future</span> Imóveis
+            <strong className="block font-display text-sm font-extrabold uppercase tracking-[0.12em] text-[var(--header-glass-text)]">
+              <span className="text-red">Future</span> Imóveis
             </strong>
-            <span className="mt-1 block font-display text-[8px] font-bold uppercase tracking-[0.2em] text-[#a9abb2]">
+            <span className="mt-1 block font-display text-[8px] font-bold uppercase tracking-[0.2em] text-[var(--header-glass-muted)]">
               CRECI 18705 J
             </span>
           </span>
@@ -45,9 +45,9 @@ export function SiteHeader() {
             <motion.a
               key={item.href}
               href={item.href}
-              whileHover={shouldReduceMotion ? undefined : { y: -2, color: "#ffffff" }}
+              whileHover={shouldReduceMotion ? undefined : { y: -2, color: "#d5272c" }}
               whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
-              className="flex min-h-11 items-center font-display text-[11px] font-bold uppercase tracking-[0.14em] text-[#b7b6b0]"
+              className="flex min-h-11 items-center font-display text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--header-glass-muted)]"
             >
               {item.label}
             </motion.a>

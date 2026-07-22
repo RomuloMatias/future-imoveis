@@ -2,6 +2,7 @@
 
 import { ArrowDown, ArrowUpRight, BadgeCheck } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
+import { RevealText } from "@/components/ui/reveal-text";
 import { createWhatsAppLink } from "@/config/site";
 
 const whatsappMessage = "Vim pelo site e gostaria de falar sobre os lotes disponíveis no Condomínio Marbello.";
@@ -37,7 +38,7 @@ export function FinalCtaSection() {
           <div>
             <p className="font-display text-[10px] font-bold uppercase tracking-[0.16em] text-red">Condições de pré-lançamento</p>
             <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,3.45rem)] font-extrabold uppercase leading-[0.98] tracking-[-0.05em]">
-              Seu lote pode estar entre os disponíveis agora.
+              <RevealText text="Seu lote pode estar entre os disponíveis agora." />
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-inverse-muted">
               Consulte os lotes restantes e receba a condição correspondente a cada localização e metragem.

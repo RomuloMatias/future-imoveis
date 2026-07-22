@@ -3,8 +3,10 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, MapPin, Ruler, Sparkles } from "lucide-react";
 import { LotGallery } from "@/components/ui/lot-gallery";
+import { RevealText } from "@/components/ui/reveal-text";
 import { createWhatsAppLink } from "@/config/site";
 import { lots } from "@/data/lots";
+import { dropIn, dropInReduced } from "@/lib/motion";
 
 function getWhatsappLink(lotId: string) {
   const message = `Vim pelo site e gostaria de saber mais sobre o ${lotId}.`;
@@ -29,7 +31,7 @@ export function LotsCatalog() {
             <span className="font-display text-[10px] font-bold uppercase tracking-[0.16em]">Estoque real disponível</span>
           </div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold uppercase leading-[0.98] tracking-[-0.045em] text-ink">
-            Escolha o lote que faz sentido para você.
+            <RevealText text="Escolha o lote que faz sentido para você." />
           </h2>
           <p className="max-w-xl text-base leading-7 text-ink-soft mobile:text-lg">
             Consulte as condições de cada lote e fale direto com o corretor responsável pelo
@@ -43,20 +45,17 @@ export function LotsCatalog() {
           viewport={{ once: true, amount: 0.18 }}
           variants={{
             hidden: {},
-            visible: { transition: { staggerChildren: shouldReduceMotion ? 0 : 0.1 } },
+            visible: { transition: { staggerChildren: shouldReduceMotion ? 0 : 0.14 } },
           }}
           className="mt-10 grid grid-cols-1 gap-4 mobile:mt-12 tablet:grid-cols-2 tablet:gap-5 wide:grid-cols-3"
         >
           {lots.map((lot) => (
               <motion.article
                 key={lot.id}
-                variants={{
-                  hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                transition={{ duration: shouldReduceMotion ? 0 : 0.38, ease: "easeOut" }}
-                whileHover={shouldReduceMotion ? undefined : { y: -7 }}
-                className={`group flex min-h-[25rem] h-full flex-col rounded-3xl border p-5 shadow-card tablet:p-6 ${
+                variants={shouldReduceMotion ? dropInReduced : dropIn}
+                whileHover={shouldReduceMotion ? undefined : { y: -12, scale: 1.015, rotateX: -1 }}
+                whileTap={shouldReduceMotion ? undefined : { scale: 0.99 }}
+                className={`group flex min-h-[25rem] h-full transform-gpu flex-col rounded-3xl border p-5 shadow-card [perspective:1000px] tablet:p-6 ${
                   lot.featured
                     ? "border-red bg-[#1f2022] text-[#f2f0ea]"
                     : "border-stone bg-paper text-ink"

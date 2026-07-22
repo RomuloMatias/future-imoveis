@@ -3,6 +3,7 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, ArrowRight, MapPin, ShieldCheck, Waves } from "lucide-react";
 import { useRef } from "react";
+import { RevealText } from "@/components/ui/reveal-text";
 
 // Adapted from 21st.dev's public FinancialHero composition by Lavi Katiyar:
 // https://21st.dev/community/components/lavikatiyar/hero-section/default
@@ -66,7 +67,12 @@ export function HeroSection() {
             transition={{ duration: shouldReduceMotion ? 0 : 0.48 }}
             className="max-w-[15ch] font-display text-[clamp(2.55rem,4.25vw,4rem)] font-extrabold uppercase leading-[0.96] tracking-[-0.05em] text-ink"
           >
-            Seu lote na <span className="text-red">Praia da Lagoinha</span> está disponível agora.
+            <RevealText
+              text="Seu lote na Praia da Lagoinha está disponível agora."
+              highlightWords={["Praia", "da", "Lagoinha"]}
+              wordStagger={0.055}
+              delay={0.15}
+            />
           </motion.h1>
 
           <motion.p

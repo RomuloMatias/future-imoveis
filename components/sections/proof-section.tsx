@@ -3,6 +3,8 @@
 import { animate, motion, useInView, useReducedMotion } from "framer-motion";
 import { BadgeCheck, Building2, HandCoins, Landmark } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { RevealText } from "@/components/ui/reveal-text";
+import { dropIn, dropInReduced } from "@/lib/motion";
 
 type StatisticProps = {
   value: number;
@@ -33,12 +35,16 @@ function Statistic({ value, prefix = "", suffix, label }: StatisticProps) {
   }, [isInView, shouldReduceMotion, value]);
 
   return (
-    <div ref={ref} className="border-l border-stone pl-5 tablet:pl-6">
+    <motion.div
+      ref={ref}
+      variants={shouldReduceMotion ? dropInReduced : dropIn}
+      className="border-l border-stone pl-5 tablet:pl-6"
+    >
       <p className="font-display text-[clamp(2.15rem,5vw,4.25rem)] font-extrabold leading-none tracking-[-0.065em] text-ink tabular-nums">
         {prefix}{displayValue.toLocaleString("pt-BR")}{suffix}
       </p>
       <p className="mt-3 max-w-36 text-sm leading-5 text-ink-soft">{label}</p>
-    </div>
+    </motion.div>
   );
 }
 
@@ -57,18 +63,24 @@ export function ProofSection() {
         >
           <p className="font-display text-[10px] font-bold uppercase tracking-[0.16em] text-red">Escala que valoriza a região</p>
           <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold uppercase leading-[0.98] tracking-[-0.045em] text-ink">
-            Um lote dentro do próximo vetor do litoral oeste.
+            <RevealText text="Um lote dentro do próximo vetor do litoral oeste." />
           </h2>
           <p className="mt-5 max-w-2xl text-base leading-7 text-ink-soft mobile:text-lg">
             O Condomínio Marbello está inserido na região das Aldeias da Lagoinha, um projeto de escala que amplia o potencial de uso e valorização do entorno.
           </p>
         </motion.div>
 
-        <div className="mt-10 grid gap-8 mobile:grid-cols-3 mobile:gap-4 tablet:mt-12 tablet:gap-8">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: shouldReduceMotion ? 0 : 0.15 } } }}
+          className="mt-10 grid gap-8 mobile:grid-cols-3 mobile:gap-4 tablet:mt-12 tablet:gap-8"
+        >
           <Statistic value={100} prefix="US$ " suffix=" mi" label="em investimento previsto para a região" />
           <Statistic value={12} suffix=" km" label="de orla no litoral oeste" />
           <Statistic value={1000} suffix=" ha" label="de área no megaprojeto" />
-        </div>
+        </motion.div>
 
         <motion.div
           initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
@@ -83,7 +95,7 @@ export function ProofSection() {
             </span>
             <p className="mt-6 font-display text-[10px] font-bold uppercase tracking-[0.16em] text-inverse-muted">Condição para sair do plano</p>
             <h3 className="mt-3 max-w-xl font-display text-[clamp(1.85rem,3.8vw,3rem)] font-extrabold uppercase leading-[0.98] tracking-[-0.045em]">
-              Financiamento direto, sem depender de banco.
+              <RevealText text="Financiamento direto, sem depender de banco." />
             </h3>
             <p className="mt-5 max-w-xl text-base leading-7 text-inverse-muted">
               Escolha o lote e consulte uma condição de entrada e saldo direto com a construtora.

@@ -46,24 +46,33 @@ cp -R scroll-world/skills/scroll-world ~/.codex/skills/    # Codex
 
 ## Requirements
 
-- The [Higgsfield CLI](https://higgsfield.ai), authenticated (`higgsfield auth login`),
-  with credits.
+- Access to the [Magnific MCP](https://mcp.magnific.com) with an account that can generate
+  images and video. Configure it for your agent before invoking the skill:
+
+  ```bash
+  # Codex
+  codex mcp add --transport http magnific https://mcp.magnific.com
+
+  # Claude Code
+  claude mcp add --transport http magnific https://mcp.magnific.com
+  ```
+
+  In VS Code, add `https://mcp.magnific.com` as the MCP server URL.
 - `ffmpeg` / `ffprobe` for frame extraction and encoding.
 - Python 3 with Pillow (for the mobile portrait canvases; also the optional
   transparent-scene knockout).
 - The [Codex CLI](https://github.com/openai/codex) (optional) — if present, the scene
   stills can be generated through Codex's built-in `image_gen` (the same GPT Image
-  model), billed to a ChatGPT subscription instead of Higgsfield credits.
+  model), billed to a ChatGPT subscription instead of Magnific usage.
 
 ## What it does
 
-It leans on [Higgsfield](https://higgsfield.ai) for the art: cohesive isometric diorama
-scenes (GPT Image 2 — via Higgsfield, or the Codex CLI on a ChatGPT subscription) and the
-camera flights themselves (Seedance or Kling image-to-video — only models that can
-frame-lock a seam), scrubbed
+It leans on [Magnific](https://magnific.com) for the art: cohesive isometric diorama
+scenes and image-to-video camera flights that support start/end-image conditioning,
+scrubbed
 by scroll position — the same technique behind Apple's scroll-through product pages. The
 camera genuinely moves; scroll only drives time. It's **framework-agnostic**: you get the
-Higgsfield pipeline, the prompt templates, and a portable vanilla-JS scrub engine that
+Magnific MCP workflow, the prompt templates, and a portable vanilla-JS scrub engine that
 drops into plain HTML, Next.js, Vue, or a Python-served page — nothing assumes a stack.
 
 When invoked, the skill:
@@ -88,8 +97,8 @@ When invoked, the skill:
 skills/scroll-world/
 ├── SKILL.md                    the procedure + the seam rule + gotchas
 └── references/
-    ├── prompts.md              intake checklist + every Higgsfield prompt template
-    ├── pipeline.md             copy-paste batch scripts (generate → frames → connectors → encode)
+    ├── prompts.md              intake checklist + prompt templates
+    ├── pipeline.md             MCP generation workflow → frames → connectors → encode
     ├── scrub-engine.js         portable, config-driven scrub engine (blob-seek, lazy load, seam crossfade)
     ├── index-template.html     a minimal standalone page that mounts the engine
     └── knockout.py             background knockout for floating scenes
@@ -97,11 +106,9 @@ skills/scroll-world/
 
 ## Notes
 
-- Asset generation costs Higgsfield credits (~N image gens + ~2N-1 video gens for N
-  scenes; the mobile chain doubles the video gens) and takes a while — the skill runs
-  generations in the background and polls. Per-generation pricing isn't exposed by the
-  CLI, so the skill calibrates against your live balance and states the estimated total
-  before spending.
+- Asset generation consumes Magnific plan credits/usage (~N image gens + ~2N-1 video gens
+  for N scenes; the mobile chain doubles the video gens). Confirm the quoted cost in the
+  connected Magnific tools before starting a full render.
 - The generated `.mp4`/`.webp` assets are produced per project; they're not shipped here.
 
 ## Star History

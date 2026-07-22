@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/sora";
 import "lenis/dist/lenis.css";
 import "./globals.css";
-import { SmoothScroll } from "@/components/smooth-scroll";
+import { SmoothScroll } from "@/components/layout/smooth-scroll";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://futureimoveisce.com.br"),

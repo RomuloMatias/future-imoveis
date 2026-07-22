@@ -2,8 +2,9 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
-import { BrandMark } from "@/components/brand-mark";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { BrandMark } from "@/components/layout/brand-mark";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { createWhatsAppLink } from "@/config/site";
 
 const navItems = [
   { label: "Lotes", href: "#lotes" },
@@ -14,6 +15,7 @@ const navItems = [
 
 export function SiteHeader() {
   const shouldReduceMotion = useReducedMotion();
+  const whatsappHref = createWhatsAppLink("Olá, quero conhecer os lotes do Condomínio Marbello.");
 
   return (
     <motion.header
@@ -55,7 +57,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <motion.a
-            href="https://wa.me/5585999999999?text=Olá%2C%20quero%20conhecer%20os%20lotes%20do%20Condomínio%20Marbello."
+            href={whatsappHref}
             target="_blank"
             rel="noreferrer"
             whileHover={shouldReduceMotion ? undefined : { y: -2, scale: 1.015 }}

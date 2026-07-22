@@ -2,10 +2,10 @@
 
 import { ArrowDown, ArrowUpRight, BadgeCheck } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
+import { createWhatsAppLink } from "@/config/site";
 
-const whatsappNumber = "5585999999999";
 const whatsappMessage = "Vim pelo site e gostaria de falar sobre os lotes disponíveis no Condomínio Marbello.";
-const whatsappHref = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+const whatsappHref = createWhatsAppLink(whatsappMessage);
 
 export function FinalCtaSection() {
   const shouldReduceMotion = useReducedMotion();

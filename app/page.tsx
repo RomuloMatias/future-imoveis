@@ -3,7 +3,7 @@ import { InfrastructureSection } from "@/components/sections/infrastructure-sect
 import { LotsCatalog } from "@/components/sections/lots-catalog";
 import { ProofSection } from "@/components/sections/proof-section";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
-import { SiteHeader } from "@/components/site-header";
+import { SiteHeader } from "@/components/layout/site-header";
 
 export default function HomePage() {
   return (

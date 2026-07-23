@@ -115,7 +115,11 @@ export function LotsCatalog({
                 href={getWhatsappLink(whatsappNumber, content.whatsappMessageTemplate, lot.name)}
                 target="_blank"
                 rel="noreferrer"
-                data-conversion-event={`Lead_${lot.name.replaceAll(" ", "_")}`}
+                data-tracking-event="generate_lead"
+                data-tracking-label="WhatsApp"
+                data-lot-id={lot.id}
+                data-lot-name={lot.name}
+                data-cta-location="lot_card"
                 whileHover={shouldReduceMotion ? undefined : { scale: 1.015 }}
                 whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
                 className="mt-auto flex min-h-12 items-center justify-center gap-2 rounded-xl bg-red px-4 pt-0.5 font-display text-[11px] font-bold uppercase tracking-[0.12em] text-cta-primary-text"

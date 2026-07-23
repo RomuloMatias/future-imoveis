@@ -45,6 +45,8 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
             <motion.a
               key={item.href}
               href={item.href}
+              data-tracking-event="navigation_click"
+              data-tracking-label={item.label}
               whileHover={shouldReduceMotion ? undefined : { y: -2, color: "#d5272c" }}
               whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
               className="flex min-h-11 items-center font-display text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--header-glass-muted)]"
@@ -60,6 +62,9 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
             href={whatsappHref}
             target="_blank"
             rel="noreferrer"
+            data-tracking-event="generate_lead"
+            data-tracking-label="WhatsApp"
+            data-cta-location="header"
             whileHover={shouldReduceMotion ? undefined : { y: -2, scale: 1.015 }}
             whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
             className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#d5272c] px-4 font-display text-[11px] font-bold uppercase tracking-[0.1em] text-white tablet:px-5"

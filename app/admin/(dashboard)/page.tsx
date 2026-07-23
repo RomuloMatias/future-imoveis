@@ -8,6 +8,7 @@ const sections = [
   { href: "/admin/infraestrutura", title: "Infraestrutura", description: "Experiências de lazer e itens técnicos." },
   { href: "/admin/condicoes", title: "Condições", description: "Números da região e bloco de financiamento." },
   { href: "/admin/cta-final", title: "Chamada final", description: "Texto e vídeo da última seção da página." },
+  { href: "/admin/rastreamento", title: "Rastreamento", description: "GTM, GA4, Google Ads, Meta Pixel e Microsoft Clarity." },
 ];
 
 export default function AdminHomePage() {

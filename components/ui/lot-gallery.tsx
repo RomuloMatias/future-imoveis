@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Images } from "lucide-react";
 import { useState } from "react";
+import { trackEvent } from "@/lib/tracking";
 
 export type LotGallerySlide = {
   label: string;
@@ -23,8 +24,16 @@ export function LotGallery({ lotName, slides, featured = false }: LotGalleryProp
   const shouldReduceMotion = useReducedMotion();
   const total = slides.length;
 
-  const goTo = (nextIndex: number) => {
-    setActiveIndex((nextIndex + total) % total);
+  const goTo = (nextIndex: number, interaction: string) => {
+    const resolvedIndex = (nextIndex + total) % total;
+    setActiveIndex(resolvedIndex);
+    trackEvent("gallery_view", {
+      lot_name: lotName,
+      gallery_index: resolvedIndex + 1,
+      gallery_total: total,
+      gallery_label: slides[resolvedIndex]?.label,
+      interaction_type: interaction,
+    });
   };
 
   if (total === 0) {
@@ -56,8 +65,8 @@ export function LotGallery({ lotName, slides, featured = false }: LotGalleryProp
         featured ? "border-white/10 bg-[#29292b]" : "border-stone bg-stone-soft"
       }`}
       onKeyDown={(event) => {
-        if (event.key === "ArrowLeft") goTo(activeIndex - 1);
-        if (event.key === "ArrowRight") goTo(activeIndex + 1);
+        if (event.key === "ArrowLeft") goTo(activeIndex - 1, "keyboard_previous");
+        if (event.key === "ArrowRight") goTo(activeIndex + 1, "keyboard_next");
       }}
       tabIndex={0}
     >
@@ -102,7 +111,8 @@ export function LotGallery({ lotName, slides, featured = false }: LotGalleryProp
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => goTo(activeIndex - 1)}
+            onClick={() => goTo(activeIndex - 1, "previous")}
+            data-tracking-ignore
             aria-label="Foto anterior"
             className={`flex h-11 w-11 items-center justify-center rounded-full border backdrop-blur transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red ${featured ? "border-white/20 bg-[#18191a]/70 text-white hover:bg-[#18191a]" : "border-paper bg-paper/85 text-ink hover:bg-paper"}`}
           >
@@ -110,7 +120,8 @@ export function LotGallery({ lotName, slides, featured = false }: LotGalleryProp
           </button>
           <button
             type="button"
-            onClick={() => goTo(activeIndex + 1)}
+            onClick={() => goTo(activeIndex + 1, "next")}
+            data-tracking-ignore
             aria-label="Próxima foto"
             className={`flex h-11 w-11 items-center justify-center rounded-full border backdrop-blur transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red ${featured ? "border-white/20 bg-[#18191a]/70 text-white hover:bg-[#18191a]" : "border-paper bg-paper/85 text-ink hover:bg-paper"}`}
           >
@@ -124,7 +135,8 @@ export function LotGallery({ lotName, slides, featured = false }: LotGalleryProp
           <button
             key={slide.label}
             type="button"
-            onClick={() => goTo(index)}
+            onClick={() => goTo(index, "indicator")}
+            data-tracking-ignore
             aria-label={`Mostrar ${slide.label}`}
             aria-current={index === activeIndex ? "true" : undefined}
             className={`h-1.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red ${index === activeIndex ? "w-6 bg-red" : featured ? "w-1.5 bg-white/50 hover:bg-white" : "w-1.5 bg-ink/35 hover:bg-ink/60"}`}

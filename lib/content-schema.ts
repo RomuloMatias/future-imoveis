@@ -40,6 +40,17 @@ export const siteSettingsSchema = z.object({
 });
 export type SiteSettings = z.infer<typeof siteSettingsSchema>;
 
+const trackingId = z.string().trim().optional().default("");
+
+export const trackingSettingsSchema = z.object({
+  gtmId: trackingId,
+  ga4Id: trackingId,
+  googleAdsId: trackingId,
+  metaPixelId: trackingId,
+  clarityId: trackingId,
+});
+export type TrackingSettings = z.infer<typeof trackingSettingsSchema>;
+
 export const heroContentSchema = z.object({
   badgeText: requiredText,
   heading: requiredText,
@@ -134,6 +145,7 @@ export type FinalCtaContent = z.infer<typeof finalCtaContentSchema>;
 
 export const siteContentSchema = z.object({
   settings: siteSettingsSchema,
+  tracking: trackingSettingsSchema,
   hero: heroContentSchema,
   lotsCatalog: lotsCatalogContentSchema,
   lots: z.array(lotSchema).default([]),

@@ -93,6 +93,8 @@ export function HeroSection({ content }: { content: HeroContent }) {
           >
             <motion.a
               href={content.primaryCtaHref}
+              data-tracking-event="view_lots"
+              data-cta-location="hero"
               whileHover={shouldReduceMotion ? undefined : { y: -3, scale: 1.01 }}
               whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
               className="group flex min-h-14 items-center justify-center gap-3 rounded-xl bg-red px-6 font-display text-xs font-extrabold uppercase tracking-[0.1em] text-white shadow-[0_18px_45px_rgba(213,39,44,0.25)] mobile:w-fit"
@@ -215,6 +217,8 @@ export function HeroSection({ content }: { content: HeroContent }) {
 
       <motion.a
         href="#lotes"
+        data-tracking-event="view_lots"
+        data-cta-location="hero_scroll_indicator"
         aria-label="Ir para os lotes disponíveis"
         animate={shouldReduceMotion ? undefined : { y: [0, 7, 0] }}
         transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}

@@ -4,6 +4,8 @@ import "lenis/dist/lenis.css";
 import "./globals.css";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import { getSiteContent } from "@/lib/content";
+import { TrackingManager } from "@/components/tracking/tracking-manager";
+import { TrackingScripts } from "@/components/tracking/tracking-scripts";
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getSiteContent();
@@ -34,7 +36,8 @@ export const viewport: Viewport = {
   themeColor: "#F2F3EF",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const { tracking } = await getSiteContent();
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
@@ -52,6 +55,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body>
+        <TrackingScripts settings={tracking} />
+        <TrackingManager />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>

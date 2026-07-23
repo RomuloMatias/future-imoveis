@@ -6,6 +6,7 @@ import {
   lotsCatalogContentSchema,
   proofContentSchema,
   siteSettingsSchema,
+  trackingSettingsSchema,
   type Lot,
   type SiteContent,
 } from "@/lib/content-schema";
@@ -59,6 +60,7 @@ export async function getSiteContent(): Promise<SiteContent> {
 
   return {
     settings: parseSection(siteSettingsSchema, stored.settings, defaultContent.settings, "settings"),
+    tracking: parseSection(trackingSettingsSchema, stored.tracking ?? defaultContent.tracking, defaultContent.tracking, "tracking"),
     hero: parseSection(heroContentSchema, stored.hero, defaultContent.hero, "hero"),
     lotsCatalog: parseSection(lotsCatalogContentSchema, stored.lotsCatalog, defaultContent.lotsCatalog, "lotsCatalog"),
     lots: parseLots(stored.lots),

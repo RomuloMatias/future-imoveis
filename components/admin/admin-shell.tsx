@@ -13,6 +13,7 @@ const navItems = [
   { href: "/admin/infraestrutura", label: "Infraestrutura" },
   { href: "/admin/condicoes", label: "Condições" },
   { href: "/admin/cta-final", label: "Chamada final" },
+  { href: "/admin/rastreamento", label: "Rastreamento" },
   { href: "/admin/senha", label: "Minha senha" },
 ];
 

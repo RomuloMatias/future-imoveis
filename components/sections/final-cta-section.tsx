@@ -53,7 +53,8 @@ export function FinalCtaSection({
               whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
               animate={shouldReduceMotion ? undefined : { scale: [1, 1.018, 1] }}
               transition={shouldReduceMotion ? undefined : { duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-              data-conversion-event="View_available_lots_final"
+              data-tracking-event="view_lots"
+              data-cta-location="final_cta"
               className="mt-8 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-red px-5 font-display text-[11px] font-bold uppercase tracking-[0.12em] text-cta-primary-text mobile:mx-auto mobile:w-auto mobile:min-w-64"
             >
               {content.primaryCtaText}
@@ -64,7 +65,9 @@ export function FinalCtaSection({
               href={whatsappHref}
               target="_blank"
               rel="noreferrer"
-              data-conversion-event="WhatsApp_general_final"
+              data-tracking-event="generate_lead"
+              data-tracking-label="WhatsApp"
+              data-cta-location="final_cta"
               className="mt-6 inline-flex items-center gap-2 text-sm text-inverse-text underline decoration-white/30 underline-offset-4 transition-colors hover:text-red"
             >
               {content.secondaryCtaText}

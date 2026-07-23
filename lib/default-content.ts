@@ -82,6 +82,13 @@ export const defaultContent: SiteContent = {
     seoDescription:
       "Lotes disponíveis no Condomínio Marbello, próximo à Praia da Lagoinha, com financiamento direto e sem burocracia bancária.",
   },
+  tracking: {
+    gtmId: "",
+    ga4Id: "",
+    googleAdsId: "",
+    metaPixelId: "",
+    clarityId: "",
+  },
   hero: {
     badgeText: "+8 loteamentos entregues no Ceará",
     heading: "Seu lote na *Praia da Lagoinha* está disponível agora.",

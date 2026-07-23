@@ -12,6 +12,13 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(content.settings.domain),
     title: content.settings.seoTitle,
     description: content.settings.seoDescription,
+    icons: {
+      icon: {
+        url: "/brand/future-logo.svg",
+        type: "image/svg+xml",
+      },
+      shortcut: "/brand/future-logo.svg",
+    },
     openGraph: {
       title: content.hero.heading.replaceAll("*", ""),
       description: content.settings.seoDescription,

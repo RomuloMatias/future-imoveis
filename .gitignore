@@ -3,7 +3,10 @@ node_modules/
 .next/
 out/
 *.tsbuildinfo
-.env*.local
+# Segredos e configurações locais de ambiente nunca devem ir para o Git.
+.env
+.env.*
+!.env.example
 .gstack/
 
 # Conteúdo e mídia gerenciados pela cliente via /admin — estado de runtime, não código-fonte.

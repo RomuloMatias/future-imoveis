@@ -4,11 +4,14 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { ArrowDown, ArrowRight, MapPin, ShieldCheck, Waves } from "lucide-react";
 import { useRef } from "react";
 import { RevealText } from "@/components/ui/reveal-text";
+import { parseHighlightedText } from "@/lib/highlight";
+import type { HeroContent } from "@/lib/content-schema";
 
 // Adapted from 21st.dev's public FinancialHero composition by Lavi Katiyar:
 // https://21st.dev/community/components/lavikatiyar/hero-section/default
-export function HeroSection() {
+export function HeroSection({ content }: { content: HeroContent }) {
   const sectionRef = useRef<HTMLElement>(null);
+  const heading = parseHighlightedText(content.heading);
   const shouldReduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -58,7 +61,7 @@ export function HeroSection() {
           >
             <ShieldCheck className="h-4 w-4 text-red" aria-hidden="true" />
             <span className="font-display text-[10px] font-bold uppercase tracking-[0.13em] text-graphite">
-              +8 loteamentos entregues no Ceará
+              {content.badgeText}
             </span>
           </motion.div>
 
@@ -68,8 +71,8 @@ export function HeroSection() {
             className="max-w-[15ch] font-display text-[clamp(2.55rem,4.25vw,4rem)] font-extrabold uppercase leading-[0.96] tracking-[-0.05em] text-ink"
           >
             <RevealText
-              text="Seu lote na Praia da Lagoinha está disponível agora."
-              highlightWords={["Praia", "da", "Lagoinha"]}
+              text={heading.text}
+              highlightWords={heading.highlightWords}
               wordStagger={0.055}
               delay={0.15}
             />
@@ -80,8 +83,7 @@ export function HeroSection() {
             transition={{ duration: shouldReduceMotion ? 0 : 0.46 }}
             className="mt-6 max-w-xl text-base leading-7 text-ink-soft mobile:text-lg"
           >
-            Condomínio Marbello: lazer completo e financiamento direto, sem burocracia
-            bancária. Escolha seu lote e fale com um corretor hoje.
+            {content.paragraph}
           </motion.p>
 
           <motion.div
@@ -90,12 +92,12 @@ export function HeroSection() {
             className="mt-8 flex flex-col gap-3 mobile:flex-row mobile:items-center"
           >
             <motion.a
-              href="#lotes"
+              href={content.primaryCtaHref}
               whileHover={shouldReduceMotion ? undefined : { y: -3, scale: 1.01 }}
               whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
               className="group flex min-h-14 items-center justify-center gap-3 rounded-xl bg-red px-6 font-display text-xs font-extrabold uppercase tracking-[0.1em] text-white shadow-[0_18px_45px_rgba(213,39,44,0.25)] mobile:w-fit"
             >
-              Ver lotes disponíveis
+              {content.primaryCtaText}
               <motion.span
                 aria-hidden="true"
                 animate={shouldReduceMotion ? undefined : { x: [0, 4, 0] }}
@@ -108,7 +110,8 @@ export function HeroSection() {
             <div className="flex min-h-14 items-center gap-3 px-1 mobile:px-4">
               <MapPin className="h-5 w-5 text-red" aria-hidden="true" />
               <span className="text-sm text-ink-soft">
-                Paraipaba, CE <strong className="block font-display text-xs uppercase text-ink">a 2 min do mar</strong>
+                {content.locationLabel}{" "}
+                <strong className="block font-display text-xs uppercase text-ink">{content.locationHighlight}</strong>
               </span>
             </div>
           </motion.div>
@@ -131,7 +134,7 @@ export function HeroSection() {
               aria-label="Vídeo aéreo do Condomínio Marbello na Praia da Lagoinha"
               className="absolute inset-0 h-full w-full object-cover"
             >
-              <source src="/media/hero/“Marbello” 👏🏼🔥 🏖️.mp4" type="video/mp4" />
+              <source src={content.videoUrl} type="video/mp4" />
             </video>
             <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-black/20" />
             <svg
@@ -176,7 +179,7 @@ export function HeroSection() {
 
             <div className="absolute inset-x-0 top-0 flex items-center justify-between p-5 text-white">
               <div className="rounded-full border border-white/20 bg-black/25 px-3 py-2 backdrop-blur-md">
-                <span className="font-display text-[9px] font-bold uppercase tracking-[0.18em]">Condomínio Marbello</span>
+                <span className="font-display text-[9px] font-bold uppercase tracking-[0.18em]">{content.videoBadgeText}</span>
               </div>
               <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/25 backdrop-blur-md">
                 <Waves className="h-4 w-4" aria-hidden="true" />
@@ -186,14 +189,14 @@ export function HeroSection() {
             <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-white/15 bg-[#191a1c]/88 p-4 text-[#f2f0ea] shadow-xl backdrop-blur-xl mobile:inset-x-5 mobile:bottom-5 mobile:p-5">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="font-display text-[9px] font-bold uppercase tracking-[0.18em] text-[#a9abb2]">Pré-lançamento</p>
-                  <p className="mt-1 font-display text-xl font-extrabold uppercase tracking-tight">Parcelas abaixo de R$ 600</p>
+                  <p className="font-display text-[9px] font-bold uppercase tracking-[0.18em] text-[#a9abb2]">{content.floatingEyebrow}</p>
+                  <p className="mt-1 font-display text-xl font-extrabold uppercase tracking-tight">{content.floatingTitle}</p>
                 </div>
-                <span className="rounded-full bg-[#d5272c] px-3 py-1.5 font-display text-[9px] font-bold uppercase tracking-wider">Disponível</span>
+                <span className="rounded-full bg-[#d5272c] px-3 py-1.5 font-display text-[9px] font-bold uppercase tracking-wider">{content.floatingStatus}</span>
               </div>
               <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-xs text-[#b7b6b0]">
-                <span>Financiamento direto</span>
-                <span className="font-display font-bold uppercase text-white">Sem banco</span>
+                <span>{content.floatingFooterLeft}</span>
+                <span className="font-display font-bold uppercase text-white">{content.floatingFooterRight}</span>
               </div>
             </div>
           </div>
@@ -205,7 +208,7 @@ export function HeroSection() {
             className="absolute right-4 top-24 rounded-2xl border border-stone/70 bg-surface p-3 shadow-card mobile:right-5 mobile:top-28 tablet:-right-12 tablet:top-28"
           >
             <p className="font-display text-[9px] font-bold uppercase tracking-[0.14em] text-graphite-soft">Localização</p>
-            <p className="mt-1 font-display text-sm font-extrabold uppercase text-ink">Lagoinha · CE</p>
+            <p className="mt-1 font-display text-sm font-extrabold uppercase text-ink">{content.floatingLocationBadge}</p>
           </motion.div>
         </motion.div>
       </div>

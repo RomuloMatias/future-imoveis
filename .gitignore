@@ -5,3 +5,7 @@ out/
 *.tsbuildinfo
 .env*.local
 .gstack/
+
+# Conteúdo e mídia gerenciados pela cliente via /admin — estado de runtime, não código-fonte.
+/data/store/
+/public/uploads/

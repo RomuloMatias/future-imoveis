@@ -5,15 +5,25 @@ import { ArrowUpRight, MapPin, Ruler, Sparkles } from "lucide-react";
 import { LotGallery } from "@/components/ui/lot-gallery";
 import { RevealText } from "@/components/ui/reveal-text";
 import { createWhatsAppLink } from "@/config/site";
-import { lots } from "@/data/lots";
 import { dropIn, dropInReduced } from "@/lib/motion";
+import type { Lot, LotsCatalogContent } from "@/lib/content-schema";
 
-function getWhatsappLink(lotId: string) {
-  const message = `Vim pelo site e gostaria de saber mais sobre o ${lotId}.`;
-  return createWhatsAppLink(message);
+function getWhatsappLink(whatsappNumber: string, template: string, lotName: string) {
+  const message = template.replaceAll("{lote}", lotName);
+  return createWhatsAppLink(whatsappNumber, message);
 }
 
-export function LotsCatalog() {
+export function LotsCatalog({
+  content,
+  lots,
+  projectName,
+  whatsappNumber,
+}: {
+  content: LotsCatalogContent;
+  lots: Lot[];
+  projectName: string;
+  whatsappNumber: string;
+}) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -28,15 +38,12 @@ export function LotsCatalog() {
         >
           <div className="flex items-center gap-2 text-red">
             <Sparkles className="h-4 w-4" aria-hidden="true" />
-            <span className="font-display text-[10px] font-bold uppercase tracking-[0.16em]">Estoque real disponível</span>
+            <span className="font-display text-[10px] font-bold uppercase tracking-[0.16em]">{content.eyebrow}</span>
           </div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold uppercase leading-[0.98] tracking-[-0.045em] text-ink">
-            <RevealText text="Escolha o lote que faz sentido para você." />
+            <RevealText text={content.heading} />
           </h2>
-          <p className="max-w-xl text-base leading-7 text-ink-soft mobile:text-lg">
-            Consulte as condições de cada lote e fale direto com o corretor responsável pelo
-            Condomínio Marbello.
-          </p>
+          <p className="max-w-xl text-base leading-7 text-ink-soft mobile:text-lg">{content.paragraph}</p>
         </motion.div>
 
         <motion.div
@@ -62,7 +69,7 @@ export function LotsCatalog() {
                 }`}
               >
               <div className="relative">
-                <LotGallery lotName={lot.id} slides={lot.gallery} featured={lot.featured} />
+                <LotGallery lotName={lot.name} slides={lot.gallery} featured={lot.featured} />
                 <span
                   className={`absolute right-3 top-3 rounded-full px-3 py-1.5 font-display text-[9px] font-bold uppercase tracking-[0.14em] ${
                     lot.status === "Últimas unidades"
@@ -76,10 +83,10 @@ export function LotsCatalog() {
 
               <div className="mt-6">
                 <p className={`font-display text-[10px] font-bold uppercase tracking-[0.16em] ${lot.featured ? "text-[#a9abb2]" : "text-graphite-soft"}`}>
-                  Condomínio Marbello
+                  {projectName}
                 </p>
                 <h3 className="mt-2 font-display text-2xl font-extrabold uppercase leading-tight tracking-[-0.035em]">
-                  {lot.id}
+                  {lot.name}
                 </h3>
               </div>
 
@@ -105,10 +112,10 @@ export function LotsCatalog() {
               </div>
 
               <motion.a
-                href={getWhatsappLink(lot.id)}
+                href={getWhatsappLink(whatsappNumber, content.whatsappMessageTemplate, lot.name)}
                 target="_blank"
                 rel="noreferrer"
-                data-conversion-event={`Lead_${lot.id.replaceAll(" ", "_")}`}
+                data-conversion-event={`Lead_${lot.name.replaceAll(" ", "_")}`}
                 whileHover={shouldReduceMotion ? undefined : { scale: 1.015 }}
                 whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
                 className="mt-auto flex min-h-12 items-center justify-center gap-2 rounded-xl bg-red px-4 pt-0.5 font-display text-[11px] font-bold uppercase tracking-[0.12em] text-cta-primary-text"
@@ -120,9 +127,7 @@ export function LotsCatalog() {
           ))}
         </motion.div>
 
-        <p className="mt-6 text-center text-xs leading-5 text-graphite-soft">
-          Valores e disponibilidade sujeitos a atualização. Confirme as condições diretamente com o corretor.
-        </p>
+        <p className="mt-6 text-center text-xs leading-5 text-graphite-soft">{content.footnote}</p>
       </div>
     </section>
   );

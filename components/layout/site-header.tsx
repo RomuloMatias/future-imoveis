@@ -5,17 +5,17 @@ import { MessageCircle } from "lucide-react";
 import { BrandMark } from "@/components/layout/brand-mark";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { createWhatsAppLink } from "@/config/site";
+import type { SiteSettings } from "@/lib/content-schema";
 
 const navItems = [
   { label: "Lotes", href: "#lotes" },
   { label: "Infraestrutura", href: "#infraestrutura" },
   { label: "Condições", href: "#condicoes" },
-  { label: "Dúvidas", href: "#faq" },
 ];
 
-export function SiteHeader() {
+export function SiteHeader({ settings }: { settings: SiteSettings }) {
   const shouldReduceMotion = useReducedMotion();
-  const whatsappHref = createWhatsAppLink("Olá, quero conhecer os lotes do Condomínio Marbello.");
+  const whatsappHref = createWhatsAppLink(settings.whatsappNumber, settings.whatsappMessageDefault);
 
   return (
     <motion.header
@@ -28,14 +28,14 @@ export function SiteHeader() {
         aria-label="Navegação principal"
         className="mx-auto flex h-16 max-w-site items-center justify-between rounded-2xl border-[var(--header-glass-border)] bg-[var(--header-glass-bg)] px-4 text-[var(--header-glass-text)] shadow-[0_16px_45px_rgba(5,10,18,0.24)] backdrop-blur-2xl backdrop-saturate-150 tablet:px-6"
       >
-        <a href="#inicio" className="flex min-h-11 items-center gap-2.5" aria-label="Future Imóveis — início">
+        <a href="#inicio" className="flex min-h-11 items-center gap-2.5" aria-label={`${settings.siteName} — início`}>
           <BrandMark />
           <span className="hidden leading-none mobile:block">
             <strong className="block font-display text-sm font-extrabold uppercase tracking-[0.12em] text-[var(--header-glass-text)]">
-              <span className="text-red">Future</span> Imóveis
+              <span className="text-red">{settings.siteName.split(" ")[0]}</span> {settings.siteName.split(" ").slice(1).join(" ")}
             </strong>
             <span className="mt-1 block font-display text-[8px] font-bold uppercase tracking-[0.2em] text-[var(--header-glass-muted)]">
-              CRECI 18705 J
+              CRECI {settings.creci}
             </span>
           </span>
         </a>
@@ -66,7 +66,7 @@ export function SiteHeader() {
             aria-label="Falar com um corretor pelo WhatsApp"
           >
             <MessageCircle className="h-4 w-4" aria-hidden="true" />
-            <span className="hidden mobile:inline">Falar com corretor</span>
+            <span className="hidden mobile:inline">{settings.headerCtaText}</span>
           </motion.a>
         </div>
       </nav>

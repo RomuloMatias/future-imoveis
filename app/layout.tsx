@@ -3,20 +3,23 @@ import "@fontsource-variable/sora";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
+import { getSiteContent } from "@/lib/content";
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://futureimoveisce.com.br"),
-  title: "Lotes à venda em Paraipaba-CE | Future Imóveis",
-  description:
-    "Lotes disponíveis no Condomínio Marbello, próximo à Praia da Lagoinha, com financiamento direto e sem burocracia bancária.",
-  openGraph: {
-    title: "Seu lote na Praia da Lagoinha está disponível agora",
-    description:
-      "Conheça os lotes disponíveis no Condomínio Marbello e fale diretamente com um corretor.",
-    locale: "pt_BR",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getSiteContent();
+
+  return {
+    metadataBase: new URL(content.settings.domain),
+    title: content.settings.seoTitle,
+    description: content.settings.seoDescription,
+    openGraph: {
+      title: content.hero.heading.replaceAll("*", ""),
+      description: content.settings.seoDescription,
+      locale: "pt_BR",
+      type: "website",
+    },
+  };
+}
 
 export const viewport: Viewport = {
   width: "device-width",

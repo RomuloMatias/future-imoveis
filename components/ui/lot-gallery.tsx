@@ -21,13 +21,31 @@ export function LotGallery({ lotName, slides, featured = false }: LotGalleryProp
   const [activeIndex, setActiveIndex] = useState(0);
   const [failedImages, setFailedImages] = useState<string[]>([]);
   const shouldReduceMotion = useReducedMotion();
-  const activeSlide = slides[activeIndex];
   const total = slides.length;
 
   const goTo = (nextIndex: number) => {
     setActiveIndex((nextIndex + total) % total);
   };
 
+  if (total === 0) {
+    return (
+      <section
+        aria-label={`Galeria do ${lotName}`}
+        className={`relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl border ${
+          featured ? "border-white/10 bg-[#29292b]" : "border-stone bg-stone-soft"
+        }`}
+      >
+        <div className="flex flex-col items-center gap-2">
+          <span className={`flex h-10 w-10 items-center justify-center rounded-xl ${featured ? "bg-white/10 text-red" : "bg-paper text-red"}`}>
+            <Images className="h-4 w-4" aria-hidden="true" />
+          </span>
+          <p className={`text-xs ${featured ? "text-[#a9abb2]" : "text-graphite-soft"}`}>Fotos em breve</p>
+        </div>
+      </section>
+    );
+  }
+
+  const activeSlide = slides[activeIndex] ?? slides[0];
   const hasImage = Boolean(activeSlide.src && !failedImages.includes(activeSlide.src));
 
   return (

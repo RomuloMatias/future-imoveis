@@ -5,6 +5,9 @@ import { BadgeCheck, Building2, HandCoins, Landmark } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { RevealText } from "@/components/ui/reveal-text";
 import { dropIn, dropInReduced } from "@/lib/motion";
+import type { ProofContent } from "@/lib/content-schema";
+
+const bulletIcons = [BadgeCheck, Landmark, Building2];
 
 type StatisticProps = {
   value: number;
@@ -48,7 +51,7 @@ function Statistic({ value, prefix = "", suffix, label }: StatisticProps) {
   );
 }
 
-export function ProofSection() {
+export function ProofSection({ content }: { content: ProofContent }) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -61,13 +64,11 @@ export function ProofSection() {
           transition={{ duration: shouldReduceMotion ? 0 : 0.42, ease: "easeOut" }}
           className="max-w-3xl"
         >
-          <p className="font-display text-[10px] font-bold uppercase tracking-[0.16em] text-red">Escala que valoriza a região</p>
+          <p className="font-display text-[10px] font-bold uppercase tracking-[0.16em] text-red">{content.eyebrow}</p>
           <h2 className="mt-4 font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold uppercase leading-[0.98] tracking-[-0.045em] text-ink">
-            <RevealText text="Um lote dentro do próximo vetor do litoral oeste." />
+            <RevealText text={content.heading} />
           </h2>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-ink-soft mobile:text-lg">
-            O Condomínio Marbello está inserido na região das Aldeias da Lagoinha, um projeto de escala que amplia o potencial de uso e valorização do entorno.
-          </p>
+          <p className="mt-5 max-w-2xl text-base leading-7 text-ink-soft mobile:text-lg">{content.paragraph}</p>
         </motion.div>
 
         <motion.div
@@ -77,9 +78,15 @@ export function ProofSection() {
           variants={{ hidden: {}, visible: { transition: { staggerChildren: shouldReduceMotion ? 0 : 0.15 } } }}
           className="mt-10 grid gap-8 mobile:grid-cols-3 mobile:gap-4 tablet:mt-12 tablet:gap-8"
         >
-          <Statistic value={100} prefix="US$ " suffix=" mi" label="em investimento previsto para a região" />
-          <Statistic value={12} suffix=" km" label="de orla no litoral oeste" />
-          <Statistic value={1000} suffix=" ha" label="de área no megaprojeto" />
+          {content.statistics.map((statistic) => (
+            <Statistic
+              key={statistic.label}
+              value={statistic.value}
+              prefix={statistic.prefix}
+              suffix={statistic.suffix}
+              label={statistic.label}
+            />
+          ))}
         </motion.div>
 
         <motion.div
@@ -93,23 +100,26 @@ export function ProofSection() {
             <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-red">
               <HandCoins className="h-5 w-5" aria-hidden="true" />
             </span>
-            <p className="mt-6 font-display text-[10px] font-bold uppercase tracking-[0.16em] text-inverse-muted">Condição para sair do plano</p>
+            <p className="mt-6 font-display text-[10px] font-bold uppercase tracking-[0.16em] text-inverse-muted">{content.financingEyebrow}</p>
             <h3 className="mt-3 max-w-xl font-display text-[clamp(1.85rem,3.8vw,3rem)] font-extrabold uppercase leading-[0.98] tracking-[-0.045em]">
-              <RevealText text="Financiamento direto, sem depender de banco." />
+              <RevealText text={content.financingHeading} />
             </h3>
-            <p className="mt-5 max-w-xl text-base leading-7 text-inverse-muted">
-              Escolha o lote e consulte uma condição de entrada e saldo direto com a construtora.
-            </p>
+            <p className="mt-5 max-w-xl text-base leading-7 text-inverse-muted">{content.financingParagraph}</p>
           </div>
 
           <div className="mt-10 border-t border-white/10 pt-7 tablet:mt-0 tablet:border-l tablet:border-t-0 tablet:pl-10 tablet:pt-0">
-            <p className="font-display text-[10px] font-bold uppercase tracking-[0.15em] text-inverse-muted">Parcelas a partir de</p>
-            <p className="mt-2 font-display text-[clamp(3rem,5vw,4.5rem)] font-extrabold leading-none tracking-[-0.07em] tabular-nums text-red">R$ 540</p>
-            <p className="mt-2 text-sm text-inverse-muted">por mês, conforme lote e condição comercial.</p>
+            <p className="font-display text-[10px] font-bold uppercase tracking-[0.15em] text-inverse-muted">{content.priceLabel}</p>
+            <p className="mt-2 font-display text-[clamp(3rem,5vw,4.5rem)] font-extrabold leading-none tracking-[-0.07em] tabular-nums text-red">{content.priceValue}</p>
+            <p className="mt-2 text-sm text-inverse-muted">{content.priceNote}</p>
             <div className="mt-7 space-y-3 border-t border-white/10 pt-6 text-sm text-inverse-text">
-              <p className="flex items-center gap-3"><BadgeCheck className="h-4 w-4 shrink-0 text-red" aria-hidden="true" /> Atendimento direto com corretor</p>
-              <p className="flex items-center gap-3"><Landmark className="h-4 w-4 shrink-0 text-red" aria-hidden="true" /> Sem burocracia bancária</p>
-              <p className="flex items-center gap-3"><Building2 className="h-4 w-4 shrink-0 text-red" aria-hidden="true" /> Condições a confirmar por lote</p>
+              {content.bullets.map((bullet, index) => {
+                const Icon = bulletIcons[index] ?? BadgeCheck;
+                return (
+                  <p key={bullet} className="flex items-center gap-3">
+                    <Icon className="h-4 w-4 shrink-0 text-red" aria-hidden="true" /> {bullet}
+                  </p>
+                );
+              })}
             </div>
           </div>
         </motion.div>
